@@ -1,1 +1,0 @@
-[Velog posting](https://velog.io/@coderhyun/series/Music-shorts) repo
