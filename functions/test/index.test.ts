@@ -8,6 +8,7 @@ describe("/", () => {
   let Functions: any;
   let loginUrl: string;
   let token: string;
+  let uid: string;
 
   before(() => {
     Functions = require("../src/index.ts");
@@ -26,7 +27,7 @@ describe("/", () => {
     it("웹뷰로 로그인 중...", async () => {
       // 브라우저 실행
       const browser = await puppeteer.launch({
-        headless: false, // 백그라운드에서 웹뷰를 띄울지, 실제 배포시에는 true로 변경
+        headless: true, // 백그라운드에서 웹뷰를 띄울지, 실제 배포시에는 true로 변경
         timeout: 15000,
       });
       const page = await browser.newPage(); // 페이지 하나 생성
@@ -51,11 +52,30 @@ describe("/", () => {
   });
 
   context("getSpotifyFirebaseCustomToken", () => {
-    it("함수 호출시 파이어베이스 토큰을 반환합니다.", async () => {
+    it("함수 호출시 파이어베이스 토큰과 uid를 반환합니다.", async () => {
       const result = await testFunctions.wrap(
         Functions.getSpotifyFirebaseCustomToken,
       )({spotifyCode: token});
-      expect(result).to.be.a("string"); // 토큰을 반환하는지
+      uid = result.uid; // uid 캐싱
+      expect(result.token).to.be.a("string"); // 토큰을 반환하는지
+      expect(result.uid).to.be.a("string"); // uid를 반환하는지
     }).timeout(5000);
+  });
+
+  context("searchTracks", () => {
+    it("함수 호출시 트랙 리스트를 반환합니다.", async () => {
+      const result = await testFunctions.wrap(Functions.searchTracks)(
+        {query: "just the two of us"},
+        {auth: {uid}}, // 위에서 생성한 테스트 계정으로 로그인
+      );
+      expect(result.items).to.be.a("array");
+    }).timeout(5000);
+
+    it("로그인 필수 입니다.", async () => {
+      const result = await testFunctions
+        .wrap(Functions.searchTracks)({query: "just the two of us"})
+        .catch((e: any) => e);
+      expect(result).to.be.a("error");
+    });
   });
 });
