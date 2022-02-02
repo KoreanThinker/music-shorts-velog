@@ -1,0 +1,37 @@
+{
+    "body": {
+        "display_name": "test_user",
+        "email": "test_user@gmail.com",
+        "external_urls": {
+            "spotify": "https://open.spotify.com/user/31se6zrwwpucppd5q7tptxs7xwwq"
+        },
+        "followers": {
+            "href": null,
+            "total": 0
+        },
+        "href": "https://api.spotify.com/v1/users/31se6zrwwpucppd5q7tptxs7xwwq",
+        "id": "31se6zrwwpucppd5q7tptxs7xwwq",
+        "images": [],
+        "type": "user",
+        "uri": "spotify:user:31se6zrwwpucppd5q7tptxs7xwwq"
+    },
+    "headers": {
+        "date": "Tue, 25 Jan 2022 07:04:18 GMT",
+        "content-type": "application/json",
+        "vary": "Accept-Encoding",
+        "set-cookie": [
+            "__Host-device_id=AQDoPmQ6ScdoSexkx89sxaTwYGOEUSFG3NTTX920TWvkdRv768wW4674YsVCtQNC4tgCHaWcLd0pG5KsvulYDmxxt51NoE3S1qs;Version=1;Path=/;Max-Age=2147483647;Secure;HttpOnly;SameSite=Lax",
+            "sp_tr=false;Version=1;Domain=accounts.spotify.com;Path=/;Secure;SameSite=Lax"
+        ],
+        "sp-trace-id": "14d665bdc5944cd6",
+        "content-encoding": "gzip",
+        "strict-transport-security": "max-age=31536000",
+        "x-content-type-options": "nosniff",
+        "server": "envoy",
+        "via": "HTTP/2 edgeproxy, 1.1 google",
+        "alt-svc": "clear",
+        "connection": "close",
+        "transfer-encoding": "chunked"
+    },
+    "statusCode": 200
+}

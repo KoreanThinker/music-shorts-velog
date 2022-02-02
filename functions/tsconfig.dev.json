@@ -2,5 +2,6 @@
   "include": [
     ".eslintrc.js",
     "test",
+    "module"
   ]
 }

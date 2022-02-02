@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import {https} from "firebase-functions";
 import Spotify from "spotify-web-api-node";
 import _admin from "firebase-admin";
@@ -9,18 +10,24 @@ export const admin =
     ? _admin.initializeApp({
         // 로컬에서 인증서를 가져옴
         credential: _admin.credential.cert(
-          // eslint-disable-next-line @typescript-eslint/no-var-requires
           require("../testServiceAccountKey.json"),
         ),
       })
     : // 테스트 환경이 아니라면 firebase의 명령어로 실행하기에 자동으로 초기화됨
       _admin.initializeApp();
 
-const spotify = new Spotify({
-  clientId: "9ed1177dd6a4429db6fd2a025cb8ffb1",
-  clientSecret: "97081903623b4ffb8654043f8c8d553e",
-  redirectUri: "http://localhost/callback",
-});
+const spotify: Spotify =
+  process.env.NODE_ENV === "test" // 테스트 환경에서 테스트 모듈을 사용
+    ? (() => {
+        // import사용시 tsc과정에서 module폴더까지 빌드가 되기때문에 require 사용
+        const SpotifyTestApi = require("../module/SpotifyTestApi").default;
+        return new SpotifyTestApi();
+      })()
+    : new Spotify({
+        clientId: "9ed1177dd6a4429db6fd2a025cb8ffb1",
+        clientSecret: "97081903623b4ffb8654043f8c8d553e",
+        redirectUri: "http://localhost/callback",
+      });
 
 export const getSpotifyOAuthUrl = https.onCall(async () => {
   const url = spotify.createAuthorizeURL(["user-read-email"], "");
