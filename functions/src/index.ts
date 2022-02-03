@@ -4,7 +4,7 @@ import Spotify from "spotify-web-api-node";
 import _admin from "firebase-admin";
 import {UserRecord} from "firebase-functions/v1/auth";
 import {HttpsError} from "firebase-functions/v1/https";
-
+//
 export const admin =
   process.env.NODE_ENV === "test" // 테스트 환경이라면
     ? _admin.initializeApp({
