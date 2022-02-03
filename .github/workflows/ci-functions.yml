@@ -1,0 +1,40 @@
+name: CI Functions
+
+on: # 실행 조건
+  push: # 커밋이 푸시되었을때
+    branches: 
+      - main # 메인 브랜치에
+    paths:
+      - "functions/**" # functions폴더 밑에 파일이 수정되었을때
+  pull_request: # PR이
+    types: [opened, synchronize, reopened] # 오픈, 동기화, 다시오픈 되었을때ㅔ
+    paths:
+      - "functions/**" # functions폴더 밑에 파일이 수정되었을때
+
+jobs:
+  build:
+    strategy:
+      matrix: 
+        platform: [ubuntu-latest]
+        node: ["16"]
+    name: Node ${{ matrix.node }} (${{ matrix.platform }})
+    runs-on: ${{ matrix.platform }}
+    defaults:
+      run:
+        working-directory: functions
+       
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: 패키지 설치
+        run: yarn
+
+      - name: 린트 실행
+        run: yarn lint
+
+      - name: 테스트 실행
+        run: yarn test
